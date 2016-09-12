@@ -61,9 +61,20 @@ public:
 	vec3 lookFrom;
 	vec3 lookAt;
 	vec3 viewDir;
+	vec3 U,V;
 	float voxel_opacity;
 	float voxel_step0;
 	float voxel_step;
+
+	char game_mode;
+	float vel_tras;
+	int game_status;
+	float timer_catch;
+	int cant_capturados;
+
+	GLint fbWidth;
+	GLint fbHeight;
+
 
 	GLhandleARB vs_main,fs_main,shader_prog;
 

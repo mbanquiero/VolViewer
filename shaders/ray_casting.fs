@@ -10,6 +10,7 @@ uniform float voxel_scale;
 uniform float voxel_opacity;
 uniform float voxel_step0;
 uniform float voxel_step;
+uniform int game_status;
 
 varying vec3 vTexCoord;
 
@@ -30,24 +31,30 @@ vec4 transfer(float I)
 	
 }
 
-float tex3d(vec3 pos)
+
+float opDisplace( vec3 p )
 {
-	pos += vec3(128.0,128.0,128.0);
-	float k = voxel_scale/256.0;
-	return texture3D(s_texture0,pos.xzy*k).r;
+	vec3 q = mod(p+8,16)-8;
+	vec3 center = vec3(0,0,0);
+    float d1 = length(q-center);
+    float d2 = 0.5*sin(15.0*p.x)*sin(15.0*p.y)*sin(15.0*p.z);
+    return d1+d2;
 }
 
-vec2 map(vec3 pos)
+float3 tex3d(vec3 pos)
 {
+	if(opDisplace(pos)<1)
+		return vec3(1.0 ,0.3 ,0.3);
+
 	pos += vec3(128.0,128.0,128.0);
 	float k = voxel_scale/256.0;
-	return texture3D(s_texture0,pos.xzy*k).rg;
+	return texture3D(s_texture0,pos.xzy*k).rgb;
 }
 
 void main()
 {
-	float cant_total = 20.0;
-	float voxel_step = 0.5;
+	float cant_total = 40.0;
+	//float voxel_step = 1;
 	float voxel_step0 = 5.5;
 	
 	vec2 uv = vTexCoord.xy*0.5;
@@ -55,7 +62,7 @@ void main()
 	// D = N + Dy*y + Dx*x;
 	vec3 rd = normalize(iViewDir + iDy*uv.y + iDx*uv.x);
 	vec3 ro = iLookFrom + rd*voxel_step0;
-	float S = 0.0;
+	float3 S = vec3(0.0,0.0,0.0);
 	float k = 1.0;
 	
 	// ray marching
@@ -65,19 +72,12 @@ void main()
 		//k*=voxel_opacity;
 	}
 	S /= cant_total;
-
-	/*
-	// sphere tracing
-	for (int i = 0; i < 5; i++) {
-		vec2 p = map(ro);
-		//p.x = voxel_step;
-		S += p.y*k*p.x/voxel_step;
-		ro += rd*p.x;
-		k*=voxel_opacity;
-	}
-	*/
-	gl_FragColor = vec4( S,S,S, 1.0 );
-	//gl_FragColor = transfer(S);
+	
+	if(game_status)
+		S.rg *= 1.5;
+	
+	gl_FragColor = vec4( S, 1.0 );
+	
 }
 
 

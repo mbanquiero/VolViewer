@@ -1,31 +1,8 @@
-﻿Compilación iniciada a las 25/05/2016 21:04:40.
+﻿Compilación iniciada a las 12/09/2016 19:13:11.
      1>Proyecto "C:\dev\volviewer\volviewer.vcxproj" en el nodo 2 (Build destinos).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\volviewer.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt RenderEngine.cpp
-         RenderEngine.cpp
-     1>c:\dev\volviewer\renderengine.cpp(14): warning C4244: '=' : conversión de 'int' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(20): warning C4305: '=' : truncamiento de 'double' a 'float'
-     1>c:\dev\volviewer\renderengine.cpp(21): warning C4305: '=' : truncamiento de 'double' a 'float'
-     1>c:\dev\volviewer\renderengine.cpp(179): warning C4305: 'inicializando' : truncamiento de 'double' a 'float'
-     1>c:\dev\volviewer\renderengine.cpp(193): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(194): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(195): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(196): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(218): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(357) : vea la declaración de 'sprintf'
-     1>c:\dev\volviewer\renderengine.cpp(220): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(357) : vea la declaración de 'sprintf'
-     1>c:\dev\volviewer\renderengine.cpp(223): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(357) : vea la declaración de 'sprintf'
-     1>c:\dev\volviewer\renderengine.cpp(349): warning C4244: 'inicializando' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(371): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(357) : vea la declaración de 'sprintf'
-     1>c:\dev\volviewer\renderengine.cpp(525): warning C4244: 'inicializando' : conversión de 'float' a 'char'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(561): warning C4305: 'inicializando' : truncamiento de 'double' a 'float'
-     1>c:\dev\volviewer\renderengine.cpp(562): warning C4244: 'inicializando' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(563): warning C4244: 'inicializando' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(693): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : vea la declaración de 'fopen'
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\volviewer.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt MainFrm.cpp
+         MainFrm.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\dev\volviewer\Debug\volviewer.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"C:\dev\volviewer\Debug\volviewer.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\dev\volviewer\Debug\volviewer.lib" /MACHINE:X86 Debug\volviewer.res
          Debug\ChildView.obj
@@ -39,4 +16,4 @@
 
 Compilación correcta.
 
-Tiempo transcurrido 00:00:00.82
+Tiempo transcurrido 00:00:00.51

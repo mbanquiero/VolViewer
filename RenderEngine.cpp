@@ -11,18 +11,47 @@ CRenderEngine::CRenderEngine()
 {
 	ray_casting = true;
 	dist = 0.0f;
-	escale = ray_casting ? 5 : 1;
+	game_status = 0;
+
+	game_mode = 2;
+	switch(game_mode)
+	{
+		case 0:
+			// MODO A
+			escale = 21.30;
+			voxel_step = 0.003;
+			vel_tras = 1;
+			break;
+		case 1:
+			// MODO B
+			escale = 5;
+			voxel_step = 0.5;
+			vel_tras = 15;
+			break;
+
+		case 2:
+			// MODO C
+			escale = 17.26;
+			voxel_step = 0.02;
+			vel_tras = 2;
+			break;
+
+	}
+
+
 	an_x = an_y = an_z = 0;
 	fps = 0;
-	// lookFrom = vec3(0,0,0);
-	//	viewDir= vec3(0.966,-0.179,-0.186);
-	lookFrom = vec3(-1,19,0);
-	an_x = -1.53;
-	an_y = -1.2;
-	voxel_opacity = 0.5;
-	voxel_step0 = 30.0;
-	voxel_step = 1.0;
+	lookFrom = vec3(-10,0,0);
+	viewDir= vec3(1,0,0);
+	U = vec3(0,1,0);
+	V = vec3(0,0,1);
 
+	//lookFrom = vec3(-1,19,0);
+	//an_x = -1.53;
+	//an_y = -1.2;
+	voxel_opacity = 0.05;
+	voxel_step0 = 30.0;
+	timer_catch = 0;
 }
 
 
@@ -91,9 +120,21 @@ bool CRenderEngine::Initialize( HDC hContext_i)
 	// inicio el sistema de fonts simples
 	initFonts();
 
+	if( !tex[0].CreateFromFile( "media/mri-head.raw", 256, 256,256))
+	{
+		AfxMessageBox( _T( "Failed to read the data" ));
+	}
+
+
 	/*for(int i=0;i<4;++i)
 		tex[i].CreateFromTest(i,256,256,256);
 		*/
+
+	GLint dims[4] = {0};
+	glGetIntegerv(GL_VIEWPORT, dims);
+	fbWidth = dims[2];
+	fbHeight = dims[3];
+
     return true;
 }
 
@@ -166,16 +207,19 @@ void CRenderEngine::initFonts()
 	 }
 
 	 SwapBuffers( m_hDC);
+
+
  }
  
  // VERSION CON RAYCASTING
  void CRenderEngine::RayCasting()
  {
-	viewDir = vec3(cos(-an_y)*cos(an_x) , sin(an_x), sin(-an_y)*cos(an_x));
+	 /*
 	vec3 VUP = vec3(0,1,0);
 	vec3 V = cross(viewDir,VUP);
 	V.normalize();
 	vec3 U = cross(V,viewDir);
+	*/
 	float fov = M_PI/4.0;
 	float DX = 800;
 	float DY = 600;
@@ -198,6 +242,7 @@ void CRenderEngine::initFonts()
 	glUniform1f (	glGetUniformLocation(shader_prog, "voxel_step") ,voxel_step);  
 	glUniform1f (	glGetUniformLocation(shader_prog, "voxel_step0") ,voxel_step0);  
 	glUniform1f (	glGetUniformLocation(shader_prog, "voxel_opacity") ,voxel_opacity);  
+	glUniform1i (	glGetUniformLocation(shader_prog, "game_status") ,game_status);  
 
 
 	glActiveTexture(GL_TEXTURE);
@@ -213,15 +258,48 @@ void CRenderEngine::initFonts()
 	glLoadIdentity();
 	glDisable(GL_TEXTURE_3D);
 
-
 	 char saux[1024];
+
+	 /*
 	 sprintf(saux,"Ray Casting fps = %.1f  VE=%.2f",fps,escale);
 	 renderText(10,10,saux);
-	 sprintf(saux,"step= %d  step0=%d opacity=%.1f",(int)voxel_step,(int)voxel_step0 , voxel_opacity);
+	 sprintf(saux,"step= %.3f  opacity=%.1f",voxel_step,voxel_opacity);
 	 renderText(10,30,saux);
-	 sprintf(saux,"LookFrom= (%d,%d,%d)  an=(%.5f,%.5f,%.5f)",
-		 (int)lookFrom.x,(int)lookFrom.y,(int)lookFrom.z,an_x,an_y,an_z);
+	 sprintf(saux,"LookFrom= (%d,%d,%d)",(int)lookFrom.x,(int)lookFrom.y,(int)lookFrom.z);
 	 renderText(10,50,saux);
+	 //sprintf(saux,"ViewDir =(%.3f,%.3f,%.3f)  UP=(%.3f,%.3f,%.3f",viewDir.x,viewDir.y,viewDir.z ,U.x,U.y,U.z);
+	 //renderText(10,50,saux);
+	 */
+
+
+	 renderText(10,10,"MRI Voxel Game");
+	 sprintf(saux,"Cantidad Capturados=%d",cant_capturados);
+	 renderText(10,30,saux);
+
+	 GLfloat array[3]; 
+	 memset(array,0,sizeof(array));
+	 glReadPixels(fbWidth/2,fbHeight/2,1,1,GL_RGB,GL_FLOAT, array);
+	 BYTE R = array[0]*256;
+	 BYTE G = array[1]*256;
+	 BYTE B = array[2]*256;
+	 if(R>200 && G<100 && B<100)
+	 {
+		 renderText(10,80," *** Target found *** ");
+		 game_status = 1;
+		 timer_catch = 1;
+		 cant_capturados++;
+	 }
+
+	 if(timer_catch>0)
+	 {
+		 timer_catch-=elapsed_time;
+		 if(timer_catch<=0)
+		 {
+			 timer_catch = 0;
+			game_status = 0;
+		 }
+	 }
+
 	 
  }
  

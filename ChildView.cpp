@@ -6,6 +6,7 @@
 #include "volviewer.h"
 #include "ChildView.h"
 #include "RenderEngine.h"
+#include <math.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -56,6 +57,7 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 void CChildView::OnPaint() 
 {
 	CPaintDC dc(this); // Contexto de dispositivo para dibujo
+
 	if(primera_vez )
 	{
 		primera_vez = false;
@@ -99,10 +101,51 @@ void CChildView::RenderLoop()
 
 		if(escena.ray_casting)
 		{
+			/*
 			if(GetAsyncKeyState(VK_UP))
 				escena.lookFrom = escena.lookFrom + escena.viewDir*(elapsed_time*20);
 			if(GetAsyncKeyState(VK_DOWN))
 				escena.lookFrom = escena.lookFrom - escena.viewDir*(elapsed_time*20);
+			*/
+
+			float vel_rot = elapsed_time*1.5;
+			vec3 cero = vec3(0,0,0);
+
+			if(GetAsyncKeyState(VK_RIGHT))
+			{
+				escena.viewDir.rotar(cero,escena.U,-vel_rot);
+				escena.V.rotar(cero,escena.U,-vel_rot);
+			}
+			if(GetAsyncKeyState(VK_LEFT))
+			{
+				escena.viewDir.rotar(cero,escena.U,vel_rot);
+				escena.V.rotar(cero,escena.U,vel_rot);
+			}
+
+			if(GetAsyncKeyState(VK_UP))
+			{
+				escena.viewDir.rotar(cero,escena.V,vel_rot);
+				escena.U.rotar(cero,escena.V,vel_rot);
+			}
+			
+			if(GetAsyncKeyState(VK_DOWN))
+			{
+				escena.viewDir.rotar(cero,escena.V,-vel_rot);
+				escena.U.rotar(cero,escena.V,-vel_rot);
+			}
+
+
+			if(GetAsyncKeyState(VK_ADD))
+				escena.voxel_step*=1.01;
+			if(GetAsyncKeyState(VK_SUBTRACT))
+				escena.voxel_step/=1.01;
+
+			//if(GetAsyncKeyState('W'))
+				escena.lookFrom = escena.lookFrom + escena.viewDir*(elapsed_time*escena.vel_tras);
+			if(GetAsyncKeyState('Z'))
+				escena.lookFrom = escena.lookFrom - escena.viewDir*(elapsed_time*escena.vel_tras);
+
+
 		}
 		else
 		{
