@@ -7,8 +7,6 @@
 
 #pragma once
 
-extern bool distance_map;
-
 
 class CTexture
 {
@@ -49,26 +47,19 @@ public:
 	void initFonts();
 	void renderText(int px, int py,char *text);
 
-	bool ray_casting;
 	HDC m_hDC;
 	HGLRC m_hglContext;
-	float dist;
-	float escale;
-	float an_x,an_y,an_z;			// rotacion = angulos de euler
 	CTexture tex;
 	float fps;
 	float time;
 	float elapsed_time;
 
 	vec3 lookFrom;
-	vec3 lookAt;
 	vec3 viewDir;
 	vec3 U,V;
-	float voxel_opacity;
 	float voxel_step0;
 	float voxel_step;
 
-	char game_mode;
 	float vel_tras;
 	int game_status;
 	float timer_catch;

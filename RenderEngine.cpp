@@ -5,67 +5,23 @@
 #pragma comment ( lib, "OpenGL32.lib" )
 #pragma comment ( lib, "glew32.lib" )
 
-bool distance_map = false;
 
 CRenderEngine::CRenderEngine() 
 {
-	ray_casting = true;
-	dist = 0.0f;
 	game_status = 0;
-
-
-
-	an_x = an_y = an_z = 0;
 	fps = 0;
 	lookFrom = vec3(-10,0,0);
 	viewDir= vec3(1,0,0);
 	U = vec3(0,1,0);
 	V = vec3(0,0,1);
 
-	//lookFrom = vec3(-1,19,0);
-	//an_x = -1.53;
-	//an_y = -1.2;
-	voxel_opacity = 0.05;
 	voxel_step0 = 5.0;
 	timer_catch = 0;
-
-
-	game_mode = 3;
-	switch(game_mode)
-	{
-	case 0:
-		// MODO A
-		escale = 21.30;
-		voxel_step = 0.003;
-		vel_tras = 1;
-		break;
-	case 1:
-		// MODO B
-		escale = 5;
-		voxel_step = 0.5;
-		vel_tras = 15;
-		break;
-
-	case 2:
-		// MODO C
-		escale = 17.26;
-		voxel_step = 0.02;
-		vel_tras = 2;
-		break;
-
-	case 3:
-		// MODO D
-		escale = 1;
-		//voxel_step = 2;
-		//voxel_step0 = 15.0;
-		voxel_step = 0.5;
-		voxel_step0 = 75.0;
-		vel_tras = 10;
-		lookFrom = vec3(-80,0,0);
-		//lookFrom = vec3(-30,10,40);
-		break;
-	}
-
+	voxel_step = 0.5;
+	voxel_step0 = 75.0;
+	vel_tras = 20;
+	lookFrom = vec3(-80,0,0);
+	//lookFrom = vec3(-30,10,40);
 }
 
 
@@ -246,29 +202,18 @@ void CRenderEngine::initFonts()
 	glUniform3f (	glGetUniformLocation(shader_prog, "iViewDir") ,viewDir.x,viewDir.y,viewDir.z);  
 	glUniform3f (	glGetUniformLocation(shader_prog, "iDx") ,Dx.x,Dx.y,Dx.z);  
 	glUniform3f (	glGetUniformLocation(shader_prog, "iDy") ,Dy.x,Dy.y,Dy.z);  
-	glUniform1f (	glGetUniformLocation(shader_prog, "voxel_scale") ,escale);  
 	glUniform1f (	glGetUniformLocation(shader_prog, "voxel_step") ,voxel_step);  
 	glUniform1f (	glGetUniformLocation(shader_prog, "voxel_step0") ,voxel_step0);  
-	glUniform1f (	glGetUniformLocation(shader_prog, "voxel_opacity") ,voxel_opacity);  
 	glUniform1i (	glGetUniformLocation(shader_prog, "game_status") ,game_status);  
+	glUniform1f (	glGetUniformLocation(shader_prog, "time") ,time);  
 
 
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture( GL_TEXTURE_3D,  tex.id);
 
-	if(game_mode<3)
-	{
-		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_MIRRORED_REPEAT);
-	}
-	else
-	{
-		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
-	}
-
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
 
 	glBegin(GL_QUADS);
 
@@ -298,7 +243,7 @@ void CRenderEngine::initFonts()
 
 	 if(0)
 	 {
-		 sprintf(saux,"Ray Casting fps = %.1f  VE=%.2f",fps,escale);
+		 sprintf(saux,"Ray Casting fps = %.1f",fps);
 		 renderText(10,10,saux);
 		 sprintf(saux,"step= %.3f  step0=%.3f",voxel_step,voxel_step0);
 		 renderText(10,30,saux);
@@ -334,8 +279,8 @@ void CRenderEngine::initFonts()
 
 	if(!game_status)
 	{
-		vec3 pos = (lookFrom + viewDir*(voxel_step0+2*voxel_step))*escale;
-		if((pos-vec3(0,0,0)).length()<2)
+		vec3 pos = lookFrom + viewDir*voxel_step0;
+		if((pos-vec3(0,0,0)).length()<5)
 		{
 			renderText(10,80," *** Target found *** ");
 			game_status = 1;
@@ -479,22 +424,13 @@ bool CTexture::CreateFromFile(LPCTSTR lpDataFile_i, int nWidth_i, int nHeight_i,
 	memset(chBuffer,0, size);
 	Medfile.Read(chBuffer, size);
 
-	if(distance_map)
-		for( int nIndx = 0; nIndx <size; nIndx++ )
-		{
-			pRGBABuffer[nIndx*4] = chBuffer[2*nIndx];
-			pRGBABuffer[nIndx*4+1] = chBuffer[2*nIndx+1];
-			pRGBABuffer[nIndx*4+2] = chBuffer[2*nIndx+1];
-			pRGBABuffer[nIndx*4+3] = chBuffer[2*nIndx+1];
-		}
-	else
-		for( int nIndx = 0; nIndx < size; ++nIndx )
-		{
-			pRGBABuffer[nIndx*4] = chBuffer[nIndx];
-			pRGBABuffer[nIndx*4+1] = chBuffer[nIndx];
-			pRGBABuffer[nIndx*4+2] = chBuffer[nIndx];
-			pRGBABuffer[nIndx*4+3] = chBuffer[nIndx];
-		}
+	for( int nIndx = 0; nIndx < size; ++nIndx )
+	{
+		pRGBABuffer[nIndx*4] = chBuffer[nIndx];
+		pRGBABuffer[nIndx*4+1] = chBuffer[nIndx];
+		pRGBABuffer[nIndx*4+2] = chBuffer[nIndx];
+		pRGBABuffer[nIndx*4+3] = chBuffer[nIndx];
+	}
 
 	if( 0 != id)
 	{
@@ -504,12 +440,17 @@ bool CTexture::CreateFromFile(LPCTSTR lpDataFile_i, int nWidth_i, int nHeight_i,
 
 	glBindTexture( GL_TEXTURE_3D, id );
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+	/*
 	bool rep = true;		// repito texturas ? 
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, rep?GL_MIRRORED_REPEAT:GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, rep?GL_MIRRORED_REPEAT:GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, rep?GL_MIRRORED_REPEAT:GL_CLAMP_TO_BORDER);
+	*/
+
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
 
 	//GL_UNSIGNED_SHORT_4_4_4_4
 	//GL_UNSIGNED_BYTE
@@ -537,8 +478,6 @@ bool CTexture::CreateFromTest(int n,int nWidth_i, int nHeight_i, int nSlices_i )
 	dx= nWidth_i;
 	dy= nHeight_i;
 	dz= nSlices_i;
-
-
 
 	int size = dx*dy*dz;
 	BYTE * chBuffer = new BYTE[size];
@@ -592,13 +531,16 @@ bool CTexture::CreateFromTest(int n,int nWidth_i, int nHeight_i, int nSlices_i )
 
 	glBindTexture( GL_TEXTURE_3D, id );
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+	/*
 	bool rep = false;		// repito texturas ? 
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, rep?GL_MIRRORED_REPEAT:GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, rep?GL_MIRRORED_REPEAT:GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, rep?GL_MIRRORED_REPEAT:GL_CLAMP_TO_BORDER);
+	*/
+
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
 
 	glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA, dx, dy, dz, 0,GL_RGBA, GL_UNSIGNED_BYTE, pRGBABuffer );
 	glBindTexture( GL_TEXTURE_3D, 0 );
