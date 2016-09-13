@@ -140,7 +140,7 @@ void CChildView::RenderLoop()
 			if(GetAsyncKeyState(VK_SUBTRACT))
 				escena.voxel_step/=1.01;
 
-			//if(GetAsyncKeyState('W'))
+			if(GetAsyncKeyState('W'))
 				escena.lookFrom = escena.lookFrom + escena.viewDir*(elapsed_time*escena.vel_tras);
 			if(GetAsyncKeyState('Z'))
 				escena.lookFrom = escena.lookFrom - escena.viewDir*(elapsed_time*escena.vel_tras);
@@ -205,10 +205,11 @@ void CChildView::OnFileOpen()
 		exit(0);
 	}
 
-	if( !escena.tex[0].CreateFromFile( objOpenFile.GetPathName(), 256, 256,256))
+	if( !escena.tex.CreateFromFile( objOpenFile.GetPathName(), 256, 256,256))
 	{
 		AfxMessageBox( _T( "Failed to read the data" ));
 	}
+
 
 }
 

@@ -137,6 +137,17 @@ mat4::mat4(	double a11,double a12, double a13,double a14,
 }
 
 
+mat4 mat4::fromBase(vec3 N, vec3 U,vec3 V)
+{
+	return mat4(		
+		N.x,	U.x,	V.x,	0,
+		N.y,	U.y,	V.y,	0,
+		N.z,	U.z,	V.z,	0,
+		0,	0,	0,	1);
+
+}
+
+
 mat4 mat4::RotateX(double an)
 {
 	double c = cos(an);

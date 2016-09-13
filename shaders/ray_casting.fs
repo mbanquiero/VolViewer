@@ -55,7 +55,7 @@ void main()
 {
 	float cant_total = 40.0;
 	//float voxel_step = 1;
-	float voxel_step0 = 5.5;
+	float voxel_step0 = 5;
 	
 	vec2 uv = vTexCoord.xy*0.5;
 	// computo la direccion del rayo

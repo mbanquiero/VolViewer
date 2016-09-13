@@ -44,6 +44,8 @@ public:
 	void TextureVR();
 	void Release();
 	void setShaders();
+	void loadShaders(char *vs,char *fs,GLhandleARB *vs_main,GLhandleARB *fs_main,GLhandleARB *shader_prog);
+
 	void initFonts();
 	void renderText(int px, int py,char *text);
 
@@ -53,7 +55,7 @@ public:
 	float dist;
 	float escale;
 	float an_x,an_y,an_z;			// rotacion = angulos de euler
-	CTexture tex[4];
+	CTexture tex;
 	float fps;
 	float time;
 	float elapsed_time;
@@ -77,6 +79,7 @@ public:
 
 
 	GLhandleARB vs_main,fs_main,shader_prog;
+	GLhandleARB vs2_main,fs2_main,shader_prog2;
 
 	// fonts
 	st_glyph glyphs[255];

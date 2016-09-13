@@ -120,15 +120,17 @@ bool CRenderEngine::Initialize( HDC hContext_i)
 	// inicio el sistema de fonts simples
 	initFonts();
 
-	if( !tex[0].CreateFromFile( "media/mri-head.raw", 256, 256,256))
+	/*if( !tex.CreateFromFile( "media/mri-head.raw", 256, 256,256))
+	{
+		AfxMessageBox( _T( "Failed to read the data" ));
+	}*/
+
+	if( !tex.CreateFromTest( 1, 256, 256,256))
 	{
 		AfxMessageBox( _T( "Failed to read the data" ));
 	}
 
 
-	/*for(int i=0;i<4;++i)
-		tex[i].CreateFromTest(i,256,256,256);
-		*/
 
 	GLint dims[4] = {0};
 	glGetIntegerv(GL_VIEWPORT, dims);
@@ -194,16 +196,14 @@ void CRenderEngine::initFonts()
  {
 	 glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
 
-	 if(tex[0].id==0)
+	 if(tex.id==0)
 	 {
 		 renderText(10,510,"sin archivo cargado");
 	 }
 	 else
 	 {
-		 if(ray_casting)
-			 RayCasting();
-		 else
-			 TextureVR();
+		 RayCasting();
+		 TextureVR();
 	 }
 
 	 SwapBuffers( m_hDC);
@@ -214,12 +214,6 @@ void CRenderEngine::initFonts()
  // VERSION CON RAYCASTING
  void CRenderEngine::RayCasting()
  {
-	 /*
-	vec3 VUP = vec3(0,1,0);
-	vec3 V = cross(viewDir,VUP);
-	V.normalize();
-	vec3 U = cross(V,viewDir);
-	*/
 	float fov = M_PI/4.0;
 	float DX = 800;
 	float DY = 600;
@@ -246,7 +240,12 @@ void CRenderEngine::initFonts()
 
 
 	glActiveTexture(GL_TEXTURE);
-	glBindTexture( GL_TEXTURE_3D,  tex[0].id);
+	glBindTexture( GL_TEXTURE_3D,  tex.id);
+
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_MIRRORED_REPEAT);
+
 
 	glBegin(GL_QUADS);
 	glVertex3f(-1,-1,0);
@@ -260,7 +259,6 @@ void CRenderEngine::initFonts()
 
 	 char saux[1024];
 
-	 /*
 	 sprintf(saux,"Ray Casting fps = %.1f  VE=%.2f",fps,escale);
 	 renderText(10,10,saux);
 	 sprintf(saux,"step= %.3f  opacity=%.1f",voxel_step,voxel_opacity);
@@ -269,12 +267,13 @@ void CRenderEngine::initFonts()
 	 renderText(10,50,saux);
 	 //sprintf(saux,"ViewDir =(%.3f,%.3f,%.3f)  UP=(%.3f,%.3f,%.3f",viewDir.x,viewDir.y,viewDir.z ,U.x,U.y,U.z);
 	 //renderText(10,50,saux);
-	 */
 
 
-	 renderText(10,10,"MRI Voxel Game");
+	 /*
+	 sprintf(saux,"Voxel Game fps = %.1f",fps);
+	 renderText(10,10,saux);
 	 sprintf(saux,"Cantidad Capturados=%d",cant_capturados);
-	 renderText(10,30,saux);
+	 renderText(10,30,saux);*/
 
 	 GLfloat array[3]; 
 	 memset(array,0,sizeof(array));
@@ -299,84 +298,11 @@ void CRenderEngine::initFonts()
 			game_status = 0;
 		 }
 	 }
-
 	 
  }
  
 
  
-
- /*
-// VERSION CON SLICES Y PROXY GEOMETRY
- void CRenderEngine::Render()
- {
-	 glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
-
-	 if(tex[0].id==0)
-	 {
-		 renderText(10,510,"sin archivo cargado");
-	 }
-	 else
-	 {
-		 glEnable( GL_ALPHA_TEST );
-		 glAlphaFunc( GL_GREATER, 0.05f );
-
-		 glEnable(GL_BLEND);
-		 glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-
-		 glMatrixMode( GL_TEXTURE );
-		 glLoadIdentity();
-
-		 // escalo y roto con respecto al centro del cubo 
-		 glTranslatef( 0.5f, 0.5f, 0.5f );
-		 glScaled( escale, 1.0f*(float)tex[0].dx/(float)tex[0].dy*escale, (float)tex[0].dx/(float)tex[0].dz*escale);
-		 mat4 transform = mat4::RotateX(an_x) * mat4::RotateY(an_y) * mat4::RotateZ(an_z);
-		 glMultMatrixd( (const double *)transform.m);
-		 glTranslatef( -0.5f,-0.5f, dist-0.5f);
-
-		 glEnable(GL_TEXTURE_3D);
-
-		 glUseProgramObjectARB(shader_prog);
-
-		 glActiveTexture(GL_TEXTURE);
-		 glBindTexture( GL_TEXTURE_3D,  tex[0].id);
-
-		 for ( float fIndx = -1.0f; fIndx <= 1.0f; fIndx+=0.01f )
-		 {
-			 glBegin(GL_QUADS);
-			 float TexIndex = fIndx;
-			 float s = (1-fIndx)/4.0;
-
-			 glTexCoord3f(0.0f, 0.0f, ((float)TexIndex+1.0f)/2.0f);  
-			 glVertex3f(-1+s,-1+s,TexIndex);
-
-			 glTexCoord3f(1.0f, 0.0f, ((float)TexIndex+1.0f)/2.0f);  
-			 glVertex3f(1-s,-1+s,TexIndex);
-
-			 glTexCoord3f(1.0f, 1.0f, ((float)TexIndex+1.0f)/2.0f);  
-			 glVertex3f(1-s,1-s,TexIndex);
-
-			 glTexCoord3f(0.0f, 1.0f, ((float)TexIndex+1.0f)/2.0f);  
-			 glVertex3f(-1+s,1-s,TexIndex);
-
-			 glEnd();
-		 }
-
-		 glUseProgramObjectARB(0);
-		 glLoadIdentity();
-		 glDisable(GL_TEXTURE_3D);
-
-	 }
-
-	 char saux[40];
-	 sprintf(saux,"fps = %.1f",fps);
-	 renderText(10,10,saux);
-
-	 SwapBuffers( m_hDC);
- }
- 
-*/
-
 
  void CRenderEngine::TextureVR()
 {
@@ -391,63 +317,59 @@ void CRenderEngine::initFonts()
 
 	// escalo y roto con respecto al centro del cubo 
 	glTranslatef( 0.5f, 0.5f, 0.5f );
-	glScaled( escale, 1.0f*(float)tex[0].dx/(float)tex[0].dy*escale, (float)tex[0].dx/(float)tex[0].dz*escale);
+	float E = 1;
+	glScaled( E, 1.0f*(float)tex.dx/(float)tex.dy*E, (float)tex.dx/(float)tex.dz*E);
 	mat4 transform = mat4::RotateX(an_x) * mat4::RotateY(an_y) * mat4::RotateZ(an_z);
 	glMultMatrixd( (const double *)transform.m);
-	glTranslatef( -0.5f,-0.5f, dist-0.5f);
+	glTranslatef( -0.5f,-0.5f,dist-0.5f);
 
 	glEnable(GL_TEXTURE_3D);
 
-	glUseProgramObjectARB(shader_prog);
+	glUseProgramObjectARB(shader_prog2);
+	vec3 pos = (lookFrom + viewDir*5)*escale;
+	glUniform3f (	glGetUniformLocation(shader_prog2, "pos") ,pos.x,pos.y,pos.z);  
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture( GL_TEXTURE_3D,  tex[0].id);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture( GL_TEXTURE_3D,  tex[1].id);
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture( GL_TEXTURE_3D,  tex[2].id);
-	glActiveTexture(GL_TEXTURE3);
-	glBindTexture( GL_TEXTURE_3D,  tex[3].id);
-	glActiveTexture(GL_TEXTURE0);
+	glBindTexture( GL_TEXTURE_3D,  tex.id);
 
-	GLint texLoc = glGetUniformLocation(shader_prog, "s_texture0");
+	GLint texLoc = glGetUniformLocation(shader_prog2, "s_texture0");
 	glUniform1i(texLoc, 0);
-	texLoc = glGetUniformLocation(shader_prog, "s_texture1");
-	glUniform1i(texLoc, 1);
-	texLoc = glGetUniformLocation(shader_prog, "s_texture2");
-	glUniform1i(texLoc, 2);
-	texLoc = glGetUniformLocation(shader_prog, "s_texture3");
-	glUniform1i(texLoc, 3);
+
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
 
 
+	
 	for ( float fIndx = -1.0f; fIndx <= 1.0f; fIndx+=0.01f )
 	{
 		glBegin(GL_QUADS);
 		float TexIndex = fIndx;
-		float s = (1-fIndx)/4.0;
+		float s = (1-fIndx)/4.0 * 0.1;
+		float d = 1.5;
 
-		glTexCoord3f(0.0f, 0.0f, ((float)TexIndex+1.0f)/2.0f);  
-		glVertex3f(-1+s,-1+s,TexIndex);
+		glTexCoord3f(0, 0, ((float)TexIndex+1.0f)/2.0f);  
+		glVertex3f(-1+s+d,-1+s+d,TexIndex);
 
-		glTexCoord3f(1.0f, 0.0f, ((float)TexIndex+1.0f)/2.0f);  
-		glVertex3f(1-s,-1+s,TexIndex);
+		glTexCoord3f(1, 0, ((float)TexIndex+1.0f)/2.0f);  
+		glVertex3f(1-s,-1+s+d,TexIndex);
 
-		glTexCoord3f(1.0f, 1.0f, ((float)TexIndex+1.0f)/2.0f);  
+		glTexCoord3f(1, 1, ((float)TexIndex+1.0f)/2.0f);  
 		glVertex3f(1-s,1-s,TexIndex);
 
-		glTexCoord3f(0.0f, 1.0f, ((float)TexIndex+1.0f)/2.0f);  
-		glVertex3f(-1+s,1-s,TexIndex);
+		glTexCoord3f(0, 1, ((float)TexIndex+1.0f)/2.0f);  
+		glVertex3f(-1+s+d,1-s,TexIndex);
 
 		glEnd();
-		}
+	}
 
 	glUseProgramObjectARB(0);
 	glLoadIdentity();
 	glDisable(GL_TEXTURE_3D);
 
-	char saux[40];
+	/*char saux[40];
 	sprintf(saux,"fps = %.1f",fps);
-	renderText(10,10,saux);
+	renderText(10,10,saux);*/
 }
 
 void CRenderEngine::Release()
@@ -549,7 +471,7 @@ void CTexture::Box(BYTE *buff, int x0,int y0,int z0,int x1,int y1,int z1)
 		for(int y=y0;y<y1;++y)
 			for(int z=z0;z<z1;++z)
 			{
-				buff[z*dx*dy + y*dx + x] = 100;
+				buff[z*dx*dy + y*dx + x] = 255;
 			}
 }
 
@@ -575,7 +497,6 @@ bool CTexture::CreateFromTest(int n,int nWidth_i, int nHeight_i, int nSlices_i )
 	memset(chBuffer,0, size);
 
 
-	/*
 	// creo una caja
 	if(n==0)
 	{
@@ -584,11 +505,8 @@ bool CTexture::CreateFromTest(int n,int nWidth_i, int nHeight_i, int nSlices_i )
 	}
 	else
 	{
-		Box(chBuffer,dx/2-15,dy/2-15,dz/2-15,dx/2+15,dy/2+15,dz/2+15);
+		Box(chBuffer,dx/2-25,dy/2-25,dz/2-25,dx/2+25,dy/2+25,dz/2+25);
 	}
-	*/
-
-	/*
 	for( int nIndx = 0; nIndx < size; ++nIndx )
 	{
 		pRGBABuffer[nIndx*4] = chBuffer[nIndx];
@@ -596,8 +514,9 @@ bool CTexture::CreateFromTest(int n,int nWidth_i, int nHeight_i, int nSlices_i )
 		pRGBABuffer[nIndx*4+2] = chBuffer[nIndx];
 		pRGBABuffer[nIndx*4+3] = chBuffer[nIndx];
 	}
-	*/
 
+
+	/*
 	for( int nIndx = 0; nIndx < size; ++nIndx )
 	{
 		char r =255*(float)rand()/(float)RAND_MAX;
@@ -606,6 +525,7 @@ bool CTexture::CreateFromTest(int n,int nWidth_i, int nHeight_i, int nSlices_i )
 		pRGBABuffer[nIndx*4+2] = r;
 		pRGBABuffer[nIndx*4+3] = r;
 	}
+	*/
 
 	if( 0 != id)
 	{
@@ -615,7 +535,7 @@ bool CTexture::CreateFromTest(int n,int nWidth_i, int nHeight_i, int nSlices_i )
 
 	glBindTexture( GL_TEXTURE_3D, id );
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	bool rep = false;		// repito texturas ? 
+	bool rep = true;		// repito texturas ? 
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, rep?GL_MIRRORED_REPEAT:GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, rep?GL_MIRRORED_REPEAT:GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, rep?GL_MIRRORED_REPEAT:GL_CLAMP_TO_BORDER);
@@ -688,74 +608,80 @@ void CRenderEngine::renderText(int px, int py,char *text)
 }
 
 
-void CRenderEngine::setShaders() 
+
+
+void CRenderEngine::loadShaders(char *vs,char *fs,GLhandleARB *vs_main,GLhandleARB *fs_main,GLhandleARB *shader_prog)
 {
 
-	char *vs,*fs;
-
-	vs_main = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-	fs_main = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);	
-
-	if(ray_casting)
-	{
-		vs = textFileRead("shaders/ray_casting.vs");
-		fs = textFileRead("shaders/ray_casting.fs");
-	}
-	else
-	{
-		vs = textFileRead("shaders/texture_vr.vs");
-		fs = textFileRead("shaders/texture_vr.fs");
-	}
-
+	*vs_main = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+	*fs_main = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);	
 	const char * vv = vs;
 	const char * ff = fs;
 
-	glShaderSourceARB(vs_main, 1, &vv,NULL);
-	glShaderSourceARB(fs_main, 1, &ff,NULL);
+	glShaderSourceARB(*vs_main, 1, &vv,NULL);
+	glShaderSourceARB(*fs_main, 1, &ff,NULL);
 
-	free(vs);free(fs);
 
-	glCompileShaderARB(vs_main);
-	glCompileShaderARB(fs_main);
+	glCompileShaderARB(*vs_main);
+	glCompileShaderARB(*fs_main);
 
 	GLint status;
-	glGetObjectParameterivARB(vs_main, GL_OBJECT_COMPILE_STATUS_ARB, &status);
+	glGetObjectParameterivARB(*vs_main, GL_OBJECT_COMPILE_STATUS_ARB, &status);
 	if(!status)
 	{
 		GLint maxLength = 0;
-		glGetShaderiv(vs_main, GL_INFO_LOG_LENGTH, &maxLength);
+		glGetShaderiv(*vs_main, GL_INFO_LOG_LENGTH, &maxLength);
 		GLchar *errorLog = new GLchar [maxLength];
-		glGetShaderInfoLog(vs_main, maxLength, &maxLength, errorLog);
+		glGetShaderInfoLog(*vs_main, maxLength, &maxLength, errorLog);
 		AfxMessageBox(errorLog);
-		glDeleteShader(vs_main); 
+		glDeleteShader(*vs_main); 
 		delete errorLog;
 		exit(0);
 	}
 
-	glGetObjectParameterivARB(fs_main, GL_OBJECT_COMPILE_STATUS_ARB, &status);
+	glGetObjectParameterivARB(*fs_main, GL_OBJECT_COMPILE_STATUS_ARB, &status);
 	if(!status)
 	{
 		GLint maxLength = 0;
-		glGetShaderiv(fs_main, GL_INFO_LOG_LENGTH, &maxLength);
+		glGetShaderiv(*fs_main, GL_INFO_LOG_LENGTH, &maxLength);
 		GLchar *errorLog = new GLchar [maxLength];
-		glGetShaderInfoLog(fs_main, maxLength, &maxLength, errorLog);
+		glGetShaderInfoLog(*fs_main, maxLength, &maxLength, errorLog);
 		AfxMessageBox(errorLog);
-		glDeleteShader(fs_main); 
+		glDeleteShader(*fs_main); 
 		delete errorLog;
 		exit(0);
 	}
 
-	shader_prog = glCreateProgramObjectARB();
+	*shader_prog = glCreateProgramObjectARB();
 
-	glAttachObjectARB(shader_prog,vs_main);
-	glAttachObjectARB(shader_prog,fs_main);
+	glAttachObjectARB(*shader_prog,*vs_main);
+	glAttachObjectARB(*shader_prog,*fs_main);
 
-	glLinkProgramARB(shader_prog);
-
-
-
+	glLinkProgramARB(*shader_prog);
 
 }
+
+
+void CRenderEngine::setShaders() 
+{
+	char *vs,*fs;
+
+	// shaders ray casting
+	vs = textFileRead("shaders/ray_casting.vs");
+	fs = textFileRead("shaders/ray_casting.fs");
+	loadShaders(vs,fs,&vs_main , &fs_main , &shader_prog);
+	free(vs);
+	free(fs);
+
+	// shaders texture volumen
+	vs = textFileRead("shaders/texture_vr.vs");
+	fs = textFileRead("shaders/texture_vr.fs");
+	loadShaders(vs,fs,&vs2_main , &fs2_main , &shader_prog2);
+	free(vs);
+	free(fs);
+
+}
+
 
 
 char *textFileRead(char *fn) 

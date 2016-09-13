@@ -50,6 +50,7 @@ class mat4
 		static mat4 RotateX(double an);
 		static mat4 RotateY(double an);
 		static mat4 RotateZ(double an);
+		static mat4 fromBase(vec3 N, vec3 U,vec3 V);
 
 		mat4 operator*(mat4 B);
 
