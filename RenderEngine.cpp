@@ -13,30 +13,6 @@ CRenderEngine::CRenderEngine()
 	dist = 0.0f;
 	game_status = 0;
 
-	game_mode = 2;
-	switch(game_mode)
-	{
-		case 0:
-			// MODO A
-			escale = 21.30;
-			voxel_step = 0.003;
-			vel_tras = 1;
-			break;
-		case 1:
-			// MODO B
-			escale = 5;
-			voxel_step = 0.5;
-			vel_tras = 15;
-			break;
-
-		case 2:
-			// MODO C
-			escale = 17.26;
-			voxel_step = 0.02;
-			vel_tras = 2;
-			break;
-
-	}
 
 
 	an_x = an_y = an_z = 0;
@@ -50,8 +26,46 @@ CRenderEngine::CRenderEngine()
 	//an_x = -1.53;
 	//an_y = -1.2;
 	voxel_opacity = 0.05;
-	voxel_step0 = 30.0;
+	voxel_step0 = 5.0;
 	timer_catch = 0;
+
+
+	game_mode = 3;
+	switch(game_mode)
+	{
+	case 0:
+		// MODO A
+		escale = 21.30;
+		voxel_step = 0.003;
+		vel_tras = 1;
+		break;
+	case 1:
+		// MODO B
+		escale = 5;
+		voxel_step = 0.5;
+		vel_tras = 15;
+		break;
+
+	case 2:
+		// MODO C
+		escale = 17.26;
+		voxel_step = 0.02;
+		vel_tras = 2;
+		break;
+
+	case 3:
+		// MODO D
+		escale = 1;
+		//voxel_step = 2;
+		//voxel_step0 = 15.0;
+		voxel_step = 0.5;
+		voxel_step0 = 75.0;
+		vel_tras = 10;
+		lookFrom = vec3(-80,0,0);
+		//lookFrom = vec3(-30,10,40);
+		break;
+	}
+
 }
 
 
@@ -120,15 +134,15 @@ bool CRenderEngine::Initialize( HDC hContext_i)
 	// inicio el sistema de fonts simples
 	initFonts();
 
-	/*if( !tex.CreateFromFile( "media/mri-head.raw", 256, 256,256))
-	{
-		AfxMessageBox( _T( "Failed to read the data" ));
-	}*/
-
-	if( !tex.CreateFromTest( 1, 256, 256,256))
+	if( !tex.CreateFromFile( "media/mri-head.raw", 256, 256,256))
 	{
 		AfxMessageBox( _T( "Failed to read the data" ));
 	}
+	/*
+	if( !tex.CreateFromTest( 1, 256, 256,256))
+	{
+		AfxMessageBox( _T( "Failed to read the data" ));
+	}*/
 
 
 
@@ -215,8 +229,8 @@ void CRenderEngine::initFonts()
  void CRenderEngine::RayCasting()
  {
 	float fov = M_PI/4.0;
-	float DX = 800;
-	float DY = 600;
+	float DX = fbWidth;
+	float DY = fbHeight;
 	float k = 2*tan(fov/2);
 	vec3 Dy = U * (k*DY/DX);
 	vec3 Dx = V * k;
@@ -242,39 +256,67 @@ void CRenderEngine::initFonts()
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture( GL_TEXTURE_3D,  tex.id);
 
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_MIRRORED_REPEAT);
+	if(game_mode<3)
+	{
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_MIRRORED_REPEAT);
+	}
+	else
+	{
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
+	}
 
 
 	glBegin(GL_QUADS);
+
+	float dx = 0.0;
+	float dy = 0.0;
+	glTexCoord2f(-1, -1);  
 	glVertex3f(-1,-1,0);
-	glVertex3f(1,-1,0);
-	glVertex3f(1,1,0);
-	glVertex3f(-1,1,0);
+
+	glTexCoord2f(1, -1);  
+	glVertex3f(1-dx,-1,0);
+
+	glTexCoord2f(1, 1);  
+	glVertex3f(1-dx,1-dy,0);
+
+	glTexCoord2f(-1, 1);  
+	glVertex3f(-1,1-dy,0);
+
+
 	glEnd();
 	glUseProgramObjectARB(0);
 	glLoadIdentity();
 	glDisable(GL_TEXTURE_3D);
 
+	
+
 	 char saux[1024];
 
-	 sprintf(saux,"Ray Casting fps = %.1f  VE=%.2f",fps,escale);
-	 renderText(10,10,saux);
-	 sprintf(saux,"step= %.3f  opacity=%.1f",voxel_step,voxel_opacity);
-	 renderText(10,30,saux);
-	 sprintf(saux,"LookFrom= (%d,%d,%d)",(int)lookFrom.x,(int)lookFrom.y,(int)lookFrom.z);
-	 renderText(10,50,saux);
-	 //sprintf(saux,"ViewDir =(%.3f,%.3f,%.3f)  UP=(%.3f,%.3f,%.3f",viewDir.x,viewDir.y,viewDir.z ,U.x,U.y,U.z);
-	 //renderText(10,50,saux);
+	 if(0)
+	 {
+		 sprintf(saux,"Ray Casting fps = %.1f  VE=%.2f",fps,escale);
+		 renderText(10,10,saux);
+		 sprintf(saux,"step= %.3f  step0=%.3f",voxel_step,voxel_step0);
+		 renderText(10,30,saux);
+		 sprintf(saux,"LookFrom= (%d,%d,%d)",(int)lookFrom.x,(int)lookFrom.y,(int)lookFrom.z);
+		 renderText(10,50,saux);
+		 //sprintf(saux,"ViewDir =(%.3f,%.3f,%.3f)  UP=(%.3f,%.3f,%.3f",viewDir.x,viewDir.y,viewDir.z ,U.x,U.y,U.z);
+		 //renderText(10,50,saux);
+	 }
+	 else
+	 {
+		 sprintf(saux,"Voxel Game fps = %.1f",fps);
+		 renderText(10,10,saux);
+		 sprintf(saux,"Cantidad Capturados=%d",cant_capturados);
+		 renderText(10,30,saux);
+	 }
 
 
 	 /*
-	 sprintf(saux,"Voxel Game fps = %.1f",fps);
-	 renderText(10,10,saux);
-	 sprintf(saux,"Cantidad Capturados=%d",cant_capturados);
-	 renderText(10,30,saux);*/
-
 	 GLfloat array[3]; 
 	 memset(array,0,sizeof(array));
 	 glReadPixels(fbWidth/2,fbHeight/2,1,1,GL_RGB,GL_FLOAT, array);
@@ -288,16 +330,29 @@ void CRenderEngine::initFonts()
 		 timer_catch = 1;
 		 cant_capturados++;
 	 }
+	 */
 
-	 if(timer_catch>0)
-	 {
-		 timer_catch-=elapsed_time;
-		 if(timer_catch<=0)
-		 {
-			 timer_catch = 0;
+	if(!game_status)
+	{
+		vec3 pos = (lookFrom + viewDir*(voxel_step0+2*voxel_step))*escale;
+		if((pos-vec3(0,0,0)).length()<2)
+		{
+			renderText(10,80," *** Target found *** ");
+			game_status = 1;
+			timer_catch = 1;
+			cant_capturados++;
+		}
+	}
+
+	if(timer_catch>0)
+	{
+		timer_catch-=elapsed_time;
+		if(timer_catch<=0)
+		{
+			timer_catch = 0;
 			game_status = 0;
-		 }
-	 }
+		}
+	}
 	 
  }
  
@@ -319,15 +374,17 @@ void CRenderEngine::initFonts()
 	glTranslatef( 0.5f, 0.5f, 0.5f );
 	float E = 1;
 	glScaled( E, 1.0f*(float)tex.dx/(float)tex.dy*E, (float)tex.dx/(float)tex.dz*E);
-	mat4 transform = mat4::RotateX(an_x) * mat4::RotateY(an_y) * mat4::RotateZ(an_z);
+	//mat4 transform = mat4::RotateX(an_x) * mat4::RotateY(an_y) * mat4::RotateZ(an_z);
+	mat4 transform = mat4::fromBase(viewDir , U,V);
 	glMultMatrixd( (const double *)transform.m);
-	glTranslatef( -0.5f,-0.5f,dist-0.5f);
+	glTranslatef( -0.5f,-0.5f,-0.5f);
 
 	glEnable(GL_TEXTURE_3D);
 
 	glUseProgramObjectARB(shader_prog2);
-	vec3 pos = (lookFrom + viewDir*5)*escale;
+	vec3 pos = lookFrom;
 	glUniform3f (	glGetUniformLocation(shader_prog2, "pos") ,pos.x,pos.y,pos.z);  
+	glUniform3f (	glGetUniformLocation(shader_prog2, "iViewDir") ,viewDir.x,viewDir.y,viewDir.z);  
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture( GL_TEXTURE_3D,  tex.id);
@@ -346,7 +403,7 @@ void CRenderEngine::initFonts()
 		glBegin(GL_QUADS);
 		float TexIndex = fIndx;
 		float s = (1-fIndx)/4.0 * 0.1;
-		float d = 1.5;
+		float d = 1.25;
 
 		glTexCoord3f(0, 0, ((float)TexIndex+1.0f)/2.0f);  
 		glVertex3f(-1+s+d,-1+s+d,TexIndex);
@@ -505,7 +562,7 @@ bool CTexture::CreateFromTest(int n,int nWidth_i, int nHeight_i, int nSlices_i )
 	}
 	else
 	{
-		Box(chBuffer,dx/2-25,dy/2-25,dz/2-25,dx/2+25,dy/2+25,dz/2+25);
+		Box(chBuffer,dx/2-10,dy/2-10,dz/2-10,dx/2+10,dy/2+10,dz/2+10);
 	}
 	for( int nIndx = 0; nIndx < size; ++nIndx )
 	{
@@ -535,7 +592,7 @@ bool CTexture::CreateFromTest(int n,int nWidth_i, int nHeight_i, int nSlices_i )
 
 	glBindTexture( GL_TEXTURE_3D, id );
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	bool rep = true;		// repito texturas ? 
+	bool rep = false;		// repito texturas ? 
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, rep?GL_MIRRORED_REPEAT:GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, rep?GL_MIRRORED_REPEAT:GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, rep?GL_MIRRORED_REPEAT:GL_CLAMP_TO_BORDER);

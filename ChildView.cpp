@@ -70,6 +70,18 @@ void CChildView::OnPaint()
 }
 
 
+// helper clamp pos
+float clamp256(float x)
+{
+	if(x<-128)
+		x+=256;
+	else
+	if(x>128)
+		x-=256;
+	return x;
+}
+
+
 void CChildView::RenderLoop()
 {
 	BOOL seguir = TRUE;
@@ -136,15 +148,25 @@ void CChildView::RenderLoop()
 
 
 			if(GetAsyncKeyState(VK_ADD))
-				escena.voxel_step*=1.01;
-			if(GetAsyncKeyState(VK_SUBTRACT))
-				escena.voxel_step/=1.01;
+				if(GetAsyncKeyState(VK_SHIFT))
+					escena.voxel_step0*=1.01;
+				else
+					escena.voxel_step*=1.01;
 
-			if(GetAsyncKeyState('W'))
+			if(GetAsyncKeyState(VK_SUBTRACT))
+				if(GetAsyncKeyState(VK_SHIFT))
+					escena.voxel_step0/=1.01;
+				else
+					escena.voxel_step/=1.01;
+
+			//if(GetAsyncKeyState('W'))
 				escena.lookFrom = escena.lookFrom + escena.viewDir*(elapsed_time*escena.vel_tras);
 			if(GetAsyncKeyState('Z'))
 				escena.lookFrom = escena.lookFrom - escena.viewDir*(elapsed_time*escena.vel_tras);
 
+			escena.lookFrom.x = clamp256(escena.lookFrom.x);
+			escena.lookFrom.y = clamp256(escena.lookFrom.y);
+			escena.lookFrom.z = clamp256(escena.lookFrom.z);
 
 		}
 		else

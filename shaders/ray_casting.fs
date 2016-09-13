@@ -34,37 +34,43 @@ vec4 transfer(float I)
 
 float opDisplace( vec3 p )
 {
-	vec3 q = mod(p+8,16)-8;
+	vec3 q = mod(p+32,64)-32;
 	vec3 center = vec3(0,0,0);
-    float d1 = length(q-center);
-    float d2 = 0.5*sin(15.0*p.x)*sin(15.0*p.y)*sin(15.0*p.z);
+    float d1 = length(p-center);
+    float d2 = sin(p.x)+sin(p.y)+sin(p.z);
     return d1+d2;
 }
 
 float3 tex3d(vec3 pos)
 {
-	if(opDisplace(pos)<1)
-		return vec3(1.0 ,0.3 ,0.3);
+	vec3 S = vec3(0,0,0);
+	float dist = opDisplace(pos);
+	float r = 15;
+	if(dist<r)
+		S = vec3(1.0 ,0.3 ,0.3)*(r-dist)/r;
 
 	pos += vec3(128.0,128.0,128.0);
 	float k = voxel_scale/256.0;
-	return texture3D(s_texture0,pos.xzy*k).rgb;
+	//float I = texture3D(s_texture0,pos.xzy*k).r;
+	//return transfer(I);
+	return texture3D(s_texture0,pos.xzy*k).rgb + S;
 }
 
 void main()
 {
-	float cant_total = 40.0;
+	float cant_total = 15.0;
 	//float voxel_step = 1;
-	float voxel_step0 = 5;
+	//float voxel_step0 = 5;
 	
-	vec2 uv = vTexCoord.xy*0.5;
+	vec2 uv = vTexCoord.xy*0.75;
 	// computo la direccion del rayo
 	// D = N + Dy*y + Dx*x;
 	vec3 rd = normalize(iViewDir + iDy*uv.y + iDx*uv.x);
 	vec3 ro = iLookFrom + rd*voxel_step0;
 	float3 S = vec3(0.0,0.0,0.0);
 	float k = 1.0;
-	
+	//voxel_opacity = 0.95;
+
 	// ray marching
 	for (int i = 0; i < cant_total; i++) {
 		S += tex3d(ro)*k;
