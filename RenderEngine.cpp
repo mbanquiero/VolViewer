@@ -334,6 +334,7 @@ void CRenderEngine::initFonts()
 
 
 	// bisturi
+	if(1)
 	{
 		vec3 pos = lookFrom + viewDir*voxel_step0;
 		int tx = pos.x + 128;
