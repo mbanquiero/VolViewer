@@ -1,44 +1,51 @@
-﻿Compilación iniciada a las 13/09/2016 16:45:18.
+﻿Compilación iniciada a las 15/09/2016 0:51:44.
      1>Proyecto "C:\dev\volviewer\volviewer.vcxproj" en el nodo 2 (Build destinos).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\volviewer.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ChildView.cpp RenderEngine.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\volviewer.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt RenderEngine.cpp
          RenderEngine.cpp
-     1>c:\dev\volviewer\renderengine.cpp(187): warning C4305: 'inicializando' : truncamiento de 'double' a 'float'
-     1>c:\dev\volviewer\renderengine.cpp(188): warning C4244: 'inicializando' : conversión de 'GLint' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(189): warning C4244: 'inicializando' : conversión de 'GLint' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(201): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(202): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(203): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(204): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(246): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\dev\volviewer\renderengine.cpp(191): warning C4305: 'inicializando' : truncamiento de 'double' a 'float'
+     1>c:\dev\volviewer\renderengine.cpp(192): warning C4244: 'inicializando' : conversión de 'GLint' a 'float'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(193): warning C4244: 'inicializando' : conversión de 'GLint' a 'float'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(205): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(206): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(207): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(208): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(251): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(357) : vea la declaración de 'sprintf'
-     1>c:\dev\volviewer\renderengine.cpp(248): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\dev\volviewer\renderengine.cpp(253): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(357) : vea la declaración de 'sprintf'
-     1>c:\dev\volviewer\renderengine.cpp(250): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\dev\volviewer\renderengine.cpp(255): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(357) : vea la declaración de 'sprintf'
-     1>c:\dev\volviewer\renderengine.cpp(257): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\dev\volviewer\renderengine.cpp(262): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(357) : vea la declaración de 'sprintf'
-     1>c:\dev\volviewer\renderengine.cpp(259): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\dev\volviewer\renderengine.cpp(264): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(357) : vea la declaración de 'sprintf'
-     1>c:\dev\volviewer\renderengine.cpp(331): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(332): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(350): warning C4244: 'inicializando' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(558): warning C4305: 'inicializando' : truncamiento de 'double' a 'float'
-     1>c:\dev\volviewer\renderengine.cpp(559): warning C4244: 'inicializando' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(560): warning C4244: 'inicializando' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(696): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\dev\volviewer\renderengine.cpp(268): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(357) : vea la declaración de 'sprintf'
+     1>c:\dev\volviewer\renderengine.cpp(271): warning C4305: 'argumento' : truncamiento de 'double' a 'float'
+     1>c:\dev\volviewer\renderengine.cpp(274): warning C4305: 'argumento' : truncamiento de 'double' a 'float'
+     1>c:\dev\volviewer\renderengine.cpp(277): warning C4305: 'argumento' : truncamiento de 'double' a 'float'
+     1>c:\dev\volviewer\renderengine.cpp(302): warning C4244: 'inicializando' : conversión de 'float' a 'BYTE'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(303): warning C4244: 'inicializando' : conversión de 'float' a 'BYTE'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(304): warning C4244: 'inicializando' : conversión de 'float' a 'BYTE'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(339): warning C4244: 'inicializando' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(340): warning C4244: 'inicializando' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(341): warning C4244: 'inicializando' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(379): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(380): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(398): warning C4244: 'inicializando' : conversión de 'double' a 'float'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(593): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(598): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(603): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(608): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(612): warning C4305: '*=' : truncamiento de 'double' a 'float'
+     1>c:\dev\volviewer\renderengine.cpp(613): warning C4305: '*=' : truncamiento de 'double' a 'float'
+     1>c:\dev\volviewer\renderengine.cpp(619): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(672): warning C4305: 'argumento' : truncamiento de 'double' a 'GLfloat'
+     1>c:\dev\volviewer\renderengine.cpp(673): warning C4305: 'argumento' : truncamiento de 'double' a 'float'
+     1>c:\dev\volviewer\renderengine.cpp(677): warning C4305: 'argumento' : truncamiento de 'double' a 'float'
+     1>c:\dev\volviewer\renderengine.cpp(820): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : vea la declaración de 'fopen'
-         ChildView.cpp
-     1>c:\dev\volviewer\childview.cpp(102): warning C4244: '+=' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\childview.cpp(103): warning C4244: '+=' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\childview.cpp(105): warning C4244: '=' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\childview.cpp(114): warning C4244: 'inicializando' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\childview.cpp(154): warning C4244: 'argumento' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\childview.cpp(156): warning C4244: 'argumento' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\childview.cpp(158): warning C4244: 'argumento' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\childview.cpp(159): warning C4244: 'argumento' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\childview.cpp(160): warning C4244: 'argumento' : conversión de 'double' a 'float'; posible pérdida de datos
-         Generando código...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\dev\volviewer\Debug\volviewer.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"C:\dev\volviewer\Debug\volviewer.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\dev\volviewer\Debug\volviewer.lib" /MACHINE:X86 Debug\volviewer.res
          Debug\ChildView.obj
@@ -52,4 +59,4 @@
 
 Compilación correcta.
 
-Tiempo transcurrido 00:00:00.81
+Tiempo transcurrido 00:00:00.68

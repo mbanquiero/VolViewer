@@ -46,6 +46,10 @@ public:
 
 	void initFonts();
 	void renderText(int px, int py,char *text);
+	void renderText(float k,int px, int py,char *text);
+	void renderCircle(int px, int py,int r);
+	void renderRect(int px0, int py0,int dx,int d1);
+	void renderHUD();
 
 	HDC m_hDC;
 	HGLRC m_hglContext;
@@ -59,6 +63,9 @@ public:
 	vec3 U,V;
 	float voxel_step0;
 	float voxel_step;
+	int filtro;
+	float mr , mg , mb;
+	bool target_hit;
 
 	float vel_tras;
 	int game_status;

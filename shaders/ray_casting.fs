@@ -6,6 +6,7 @@ uniform vec3 iDy;
 uniform float voxel_step0;
 uniform float voxel_step;
 uniform int game_status;
+uniform int filter;
 uniform float time;
 
 varying vec3 vTexCoord;
@@ -14,19 +15,19 @@ const float cant_total = 15.0;
 
 
 // transfer function
-vec4 transfer(float I)
+vec3 transfer(float I)
 {
-	vec4 clr;
+	vec3 clr;
 	float t0 = 0.3;
 	float t1 = 0.7;
 	if(I<t0)
-		clr = vec4(0.0 , 0.0 , I/t0 , 1.0);
+		clr = vec3(0.0 , 0.0 , I/t0);
 	else
 	if(I<t1)
-		clr = vec4(0.0 , (I-t0)/(t1-t0) , 0.0 , 1.0);
+		clr = vec3(0.0 , (I-t0)/(t1-t0) , 0.0);
 	else
-		clr = vec4((I-t1)/(1-t1),0.0 , 0.0 , 1.0);
-	return clr;
+		clr = vec3((I-t1)/(1-t1),0.0 , 0.0);
+	return mix(clr , vec3(I,I,I) , 0.5);
 	
 }
 
@@ -50,9 +51,9 @@ float3 tex3d(vec3 pos)
 
 	pos += vec3(128.0,128.0,128.0);
 	float k = 1.0/256.0;
-	//float I = texture3D(s_texture0,pos.xzy*k).r;
-	//return transfer(I);
-	return texture3D(s_texture0,pos.xzy*k).rgb + S;
+	vec4 tx = texture3D(s_texture0,pos.xzy*k);
+	
+	return filter ? transfer(tx.r) : tx.rgb + S;
 }
 
 void main()
