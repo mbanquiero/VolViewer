@@ -139,6 +139,14 @@ void CChildView::RenderLoop()
 
 
 		if(GetAsyncKeyState(VK_ADD))
+			escena.filtro = 1;
+		if(GetAsyncKeyState(VK_SUBTRACT))
+			escena.filtro = 0;
+
+
+		/*
+
+		if(GetAsyncKeyState(VK_ADD))
 			if(GetAsyncKeyState(VK_SHIFT))
 				escena.voxel_step0*=1.01f;
 			else
@@ -149,8 +157,9 @@ void CChildView::RenderLoop()
 				escena.voxel_step0/=1.01f;
 			else
 				escena.voxel_step/=1.01f;
+		*/
 
-		//if(GetAsyncKeyState('W'))
+		if(GetAsyncKeyState('W'))
 			escena.lookFrom = escena.lookFrom + escena.viewDir*(elapsed_time*escena.vel_tras);
 		if(GetAsyncKeyState('Z'))
 			escena.lookFrom = escena.lookFrom - escena.viewDir*(elapsed_time*escena.vel_tras);
@@ -189,6 +198,7 @@ void CChildView::RenderLoop()
 				case VK_ESCAPE:
 					seguir = FALSE;
 					break;
+				
 				}
 				break;
 			}
