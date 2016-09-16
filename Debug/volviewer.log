@@ -1,4 +1,4 @@
-﻿Compilación iniciada a las 15/09/2016 9:22:58.
+﻿Compilación iniciada a las 15/09/2016 20:48:39.
      1>Proyecto "C:\dev\volviewer\volviewer.vcxproj" en el nodo 2 (Build destinos).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\volviewer.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt RenderEngine.cpp
@@ -34,17 +34,25 @@
      1>c:\dev\volviewer\renderengine.cpp(380): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
      1>c:\dev\volviewer\renderengine.cpp(381): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
      1>c:\dev\volviewer\renderengine.cpp(399): warning C4244: 'inicializando' : conversión de 'double' a 'float'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(594): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(599): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(604): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(609): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(613): warning C4305: '*=' : truncamiento de 'double' a 'float'
-     1>c:\dev\volviewer\renderengine.cpp(614): warning C4305: '*=' : truncamiento de 'double' a 'float'
-     1>c:\dev\volviewer\renderengine.cpp(620): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
-     1>c:\dev\volviewer\renderengine.cpp(673): warning C4305: 'argumento' : truncamiento de 'double' a 'GLfloat'
-     1>c:\dev\volviewer\renderengine.cpp(674): warning C4305: 'argumento' : truncamiento de 'double' a 'float'
-     1>c:\dev\volviewer\renderengine.cpp(678): warning C4305: 'argumento' : truncamiento de 'double' a 'float'
-     1>c:\dev\volviewer\renderengine.cpp(821): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\dev\volviewer\renderengine.cpp(488): warning C4244: 'inicializando' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(489): warning C4244: 'inicializando' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(490): warning C4244: 'inicializando' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(530): warning C4309: '=' : truncamiento de valor constante
+     1>c:\dev\volviewer\renderengine.cpp(553): warning C4244: 'inicializando' : conversión de 'int' a 'float'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(554): warning C4244: 'inicializando' : conversión de 'int' a 'float'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(555): warning C4244: 'inicializando' : conversión de 'int' a 'float'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(574): warning C4309: '=' : truncamiento de valor constante
+     1>c:\dev\volviewer\renderengine.cpp(667): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(672): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(677): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(682): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(686): warning C4305: '*=' : truncamiento de 'double' a 'float'
+     1>c:\dev\volviewer\renderengine.cpp(687): warning C4305: '*=' : truncamiento de 'double' a 'float'
+     1>c:\dev\volviewer\renderengine.cpp(693): warning C4244: 'argumento' : conversión de 'double' a 'GLfloat'; posible pérdida de datos
+     1>c:\dev\volviewer\renderengine.cpp(746): warning C4305: 'argumento' : truncamiento de 'double' a 'GLfloat'
+     1>c:\dev\volviewer\renderengine.cpp(747): warning C4305: 'argumento' : truncamiento de 'double' a 'float'
+     1>c:\dev\volviewer\renderengine.cpp(751): warning C4305: 'argumento' : truncamiento de 'double' a 'float'
+     1>c:\dev\volviewer\renderengine.cpp(894): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : vea la declaración de 'fopen'
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\dev\volviewer\Debug\volviewer.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"C:\dev\volviewer\Debug\volviewer.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\dev\volviewer\Debug\volviewer.lib" /MACHINE:X86 Debug\volviewer.res
@@ -59,4 +67,4 @@
 
 Compilación correcta.
 
-Tiempo transcurrido 00:00:00.73
+Tiempo transcurrido 00:00:00.71

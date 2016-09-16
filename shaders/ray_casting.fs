@@ -46,8 +46,8 @@ float3 tex3d(vec3 pos)
 	vec3 S = vec3(0,0,0);
 	float dist = opDisplace(pos);
 	float r = 20;
-	if(dist<r)
-		S = vec3(1.0 ,0.3 ,0.3)*(r-dist)/r;
+//	if(dist<r)
+//		S = vec3(1.0 ,0.3 ,0.3)*(r-dist)/r;
 
 	pos += vec3(128.0,128.0,128.0);
 	float k = 1.0/256.0;

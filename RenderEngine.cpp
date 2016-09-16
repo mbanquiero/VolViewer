@@ -334,7 +334,7 @@ void CRenderEngine::initFonts()
 
 
 	// bisturi
-	if(1)
+	if(0)
 	{
 		vec3 pos = lookFrom + viewDir*voxel_step0;
 		int tx = pos.x + 128;
@@ -481,6 +481,16 @@ bool CTexture::CreateFromFile(LPCTSTR lpDataFile_i, int nWidth_i, int nHeight_i,
 		pRGBABuffer[nIndx*4+3] = chBuffer[nIndx];
 	}
 
+	// experimento, le pongo una caja roja
+	for(int i=0;i<20;++i)
+	{
+		int r = 8;
+		int x = (float)rand()/(float)RAND_MAX*200.0f + 20;
+		int y = (float)rand()/(float)RAND_MAX*200.0f + 20;
+		int z = (float)rand()/(float)RAND_MAX*200.0f + 20;
+		Ellipsoid(pRGBABuffer , x-r,y-r,z-r,x+r,y+r,z+r);
+	}
+
 	if( 0 != id)
 	{
 		glDeleteTextures( 1, (GLuint*)&id);
@@ -501,6 +511,69 @@ bool CTexture::CreateFromFile(LPCTSTR lpDataFile_i, int nWidth_i, int nHeight_i,
 	delete[] chBuffer;
 	delete[] pRGBABuffer;
 	return true;
+}
+
+
+void CTexture::Box2(char *buff, int x0,int y0,int z0,int x1,int y1,int z1)
+{
+	x0 = clamp(x0,0,255);
+	y0 = clamp(y0,0,255);
+	z0 = clamp(z0,0,255);
+	x1 = clamp(x1,0,255);
+	y1 = clamp(y1,0,255);
+	z1 = clamp(z1,0,255);
+
+	for(int x=x0;x<x1;++x)
+		for(int y=y0;y<y1;++y)
+			for(int z=z0;z<z1;++z)
+			{
+				buff[(z*dx*dy + y*dx + x)*4] = 255;
+				buff[(z*dx*dy + y*dx + x)*4+1] = 0;
+				buff[(z*dx*dy + y*dx + x)*4+2] = 0;
+			}
+}
+
+void CTexture::Ellipsoid(char *buff, int x0,int y0,int z0,int x1,int y1,int z1)
+{
+	x0 = clamp(x0,0,255);
+	y0 = clamp(y0,0,255);
+	z0 = clamp(z0,0,255);
+	x1 = clamp(x1,0,255);
+	y1 = clamp(y1,0,255);
+	z1 = clamp(z1,0,255);
+
+	int cx = (x1+x0)/2;
+	int cy = (y1+y0)/2;
+	int cz = (z1+z0)/2;
+
+	int rx = (x1-x0)/2;
+	int ry = (y1-y0)/2;
+	int rz = (z1-z0)/2;
+
+	float rx2 = rx*rx;
+	float ry2 = ry*ry;
+	float rz2 = rz*rz;
+
+	for(int x=x0;x<x1;++x)
+		for(int y=y0;y<y1;++y)
+			for(int z=z0;z<z1;++z)
+			{
+				float sx = (float)(x-cx);
+				float sy = (float)(y-cy);
+				float sz = (float)(z-cz);
+
+				float tx = sx*sx/rx2;
+				float ty = sy*sy/ry2;
+				float tz = sz*sz/rz2;
+
+				float k = tx+ty+tz;
+				if(k<=1)
+				{
+					int ndx = (z*dx*dy + y*dx + x)*4;
+					//buff[ndx] = clamp ( buff[ndx] + 255*(1-k) , 0, 255);
+					buff[ndx] = 255;
+				}
+			}
 }
 
 void CTexture::Box(BYTE *buff, int x0,int y0,int z0,int x1,int y1,int z1)

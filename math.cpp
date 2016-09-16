@@ -242,3 +242,15 @@ bool intersect(vec3 orig , vec3 dir, vec3 center,float radio)
 	return false;
 
 } 
+
+
+int clamp(int x , int a, int b)
+{
+	if(x<a)
+		return a;
+	else
+	if(x>b)
+		return b;
+	else
+		return x;
+}
