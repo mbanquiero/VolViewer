@@ -62,7 +62,7 @@ void CChildView::OnPaint()
 	{
 		primera_vez = false;
 		if( !escena.Initialize( dc.m_hDC))
-			AfxMessageBox( "Error al iniciar opengl",MB_ICONSTOP);
+			AfxMessageBox(L"Error al iniciar opengl",MB_ICONSTOP);
 		else
 			RenderLoop();
 	}
